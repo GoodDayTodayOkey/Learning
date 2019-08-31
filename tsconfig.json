@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
     "removeComments": true,
+    "baseUrl": "./src",
+    "target": "es5",
+    "module": "esnext",
     "sourceMap": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
     "noImplicitAny": false,    
     "jsx": "react",
   },
-  "include" : ["src/**/*"],
 }
