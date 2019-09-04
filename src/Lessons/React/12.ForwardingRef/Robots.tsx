@@ -52,7 +52,7 @@ class Robots extends React.PureComponent<IProps> {
   }
 
   public childrenMethod = () => {
-    alert('a');
+    alert('Called children method');
   }
 }
 
