@@ -1,12 +1,18 @@
 import * as React from 'react';
 import { block } from 'bem-cn';
-const SplittingCode = React.lazy(() => import('Lessons/React/8.SplittingCode/SplittingCode'));
+import ErrorBoundary from 'Lessons/React/10.ErrorBoundary/ErrorBoundary';
+const Box  = React.lazy(() => import('Lessons/React/12.ForwardingRef/Box'));
+
 const b = block('app');
 
 class App extends React.PureComponent {
   public render() {
     return (<div className={b()}>
-      <React.Suspense fallback={<>Hi</>}><SplittingCode /></React.Suspense>
+      <ErrorBoundary>
+        <React.Suspense fallback={<>Загрузка...</>}>
+          <Box/>
+        </React.Suspense>
+      </ErrorBoundary>
     </div>);
   }
 }
