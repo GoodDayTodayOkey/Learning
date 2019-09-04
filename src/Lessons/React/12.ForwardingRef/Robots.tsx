@@ -51,7 +51,7 @@ class Robots extends React.PureComponent<IProps> {
     );
   }
 
-  static a = () => {
+  public childrenMethod = () => {
     alert('a');
   }
 }

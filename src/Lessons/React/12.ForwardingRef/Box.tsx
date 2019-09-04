@@ -11,10 +11,18 @@ interface IState {
   square: number;
 }
 
+interface A {
+  childrenMethod(): void;
+}
+
 class Box extends React.PureComponent<{}, IState> {
   public state: IState = { square: 0 };
 
-  private robotsRef: React.RefObject<React.Component> = React.createRef();
+  private robotsRef: React.RefObject<React.Component & A> = React.createRef();
+
+  public componentDidMount () {
+    this.robotsRef.current.childrenMethod();
+  }
 
   public render () {
     const { square } = this.state;
