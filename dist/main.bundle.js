@@ -1,6 +1,50 @@
 /******/ (function(modules) { // webpackBootstrap
+/******/ 	// install a JSONP callback for chunk loading
+/******/ 	function webpackJsonpCallback(data) {
+/******/ 		var chunkIds = data[0];
+/******/ 		var moreModules = data[1];
+/******/
+/******/
+/******/ 		// add "moreModules" to the modules object,
+/******/ 		// then flag all "chunkIds" as loaded and fire callback
+/******/ 		var moduleId, chunkId, i = 0, resolves = [];
+/******/ 		for(;i < chunkIds.length; i++) {
+/******/ 			chunkId = chunkIds[i];
+/******/ 			if(installedChunks[chunkId]) {
+/******/ 				resolves.push(installedChunks[chunkId][0]);
+/******/ 			}
+/******/ 			installedChunks[chunkId] = 0;
+/******/ 		}
+/******/ 		for(moduleId in moreModules) {
+/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+/******/ 				modules[moduleId] = moreModules[moduleId];
+/******/ 			}
+/******/ 		}
+/******/ 		if(parentJsonpFunction) parentJsonpFunction(data);
+/******/
+/******/ 		while(resolves.length) {
+/******/ 			resolves.shift()();
+/******/ 		}
+/******/
+/******/ 	};
+/******/
+/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
+/******/
+/******/ 	// object to store loaded and loading chunks
+/******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 	// Promise = chunk loading, 0 = chunk loaded
+/******/ 	var installedChunks = {
+/******/ 		"main": 0
+/******/ 	};
+/******/
+/******/
+/******/
+/******/ 	// script path function
+/******/ 	function jsonpScriptSrc(chunkId) {
+/******/ 		return __webpack_require__.p + "" + ({}[chunkId]||chunkId) + ".bundle.js"
+/******/ 	}
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -26,6 +70,67 @@
 /******/ 		return module.exports;
 /******/ 	}
 /******/
+/******/ 	// This file contains only the entry chunk.
+/******/ 	// The chunk loading function for additional chunks
+/******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
+/******/ 		var promises = [];
+/******/
+/******/
+/******/ 		// JSONP chunk loading for javascript
+/******/
+/******/ 		var installedChunkData = installedChunks[chunkId];
+/******/ 		if(installedChunkData !== 0) { // 0 means "already installed".
+/******/
+/******/ 			// a Promise means "currently loading".
+/******/ 			if(installedChunkData) {
+/******/ 				promises.push(installedChunkData[2]);
+/******/ 			} else {
+/******/ 				// setup Promise in chunk cache
+/******/ 				var promise = new Promise(function(resolve, reject) {
+/******/ 					installedChunkData = installedChunks[chunkId] = [resolve, reject];
+/******/ 				});
+/******/ 				promises.push(installedChunkData[2] = promise);
+/******/
+/******/ 				// start chunk loading
+/******/ 				var script = document.createElement('script');
+/******/ 				var onScriptComplete;
+/******/
+/******/ 				script.charset = 'utf-8';
+/******/ 				script.timeout = 120;
+/******/ 				if (__webpack_require__.nc) {
+/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 				}
+/******/ 				script.src = jsonpScriptSrc(chunkId);
+/******/
+/******/ 				// create error before stack unwound to get useful stacktrace later
+/******/ 				var error = new Error();
+/******/ 				onScriptComplete = function (event) {
+/******/ 					// avoid mem leaks in IE.
+/******/ 					script.onerror = script.onload = null;
+/******/ 					clearTimeout(timeout);
+/******/ 					var chunk = installedChunks[chunkId];
+/******/ 					if(chunk !== 0) {
+/******/ 						if(chunk) {
+/******/ 							var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/ 							var realSrc = event && event.target && event.target.src;
+/******/ 							error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+/******/ 							error.name = 'ChunkLoadError';
+/******/ 							error.type = errorType;
+/******/ 							error.request = realSrc;
+/******/ 							chunk[1](error);
+/******/ 						}
+/******/ 						installedChunks[chunkId] = undefined;
+/******/ 					}
+/******/ 				};
+/******/ 				var timeout = setTimeout(function(){
+/******/ 					onScriptComplete({ type: 'timeout', target: script });
+/******/ 				}, 120000);
+/******/ 				script.onerror = script.onload = onScriptComplete;
+/******/ 				document.head.appendChild(script);
+/******/ 			}
+/******/ 		}
+/******/ 		return Promise.all(promises);
+/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -78,6 +183,16 @@
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// on error function for async loading
+/******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
+/******/
+/******/ 	var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
+/******/ 	var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
+/******/ 	jsonpArray.push = webpackJsonpCallback;
+/******/ 	jsonpArray = jsonpArray.slice();
+/******/ 	for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
+/******/ 	var parentJsonpFunction = oldJsonpFunction;
 /******/
 /******/
 /******/ 	// Load entry module and return exports
@@ -233,23 +348,23 @@ eval("\n\nif (false) {} else {\n  module.exports = __webpack_require__(/*! ./cjs
 /*!*********************!*\
   !*** ./App/App.tsx ***!
   \*********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("\nvar __extends = (this && this.__extends) || (function () {\n    var extendStatics = function (d, b) {\n        extendStatics = Object.setPrototypeOf ||\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };\n        return extendStatics(d, b);\n    };\n    return function (d, b) {\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();\nexports.__esModule = true;\nvar React = __webpack_require__(/*! react */ \"../node_modules/react/index.js\");\nvar bem_cn_1 = __webpack_require__(/*! bem-cn */ \"../node_modules/bem-cn/lib/index.js\");\nvar SplittingCode = React.lazy(function () { return Promise.resolve().then(function () { return __webpack_require__(/*! Lessons/React/8.SplittingCode/SplittingCode */ \"./Lessons/React/8.SplittingCode/SplittingCode.tsx\"); }); });\nvar b = bem_cn_1.block('app');\nvar App = (function (_super) {\n    __extends(App, _super);\n    function App() {\n        return _super !== null && _super.apply(this, arguments) || this;\n    }\n    App.prototype.render = function () {\n        return React.createElement(\"div\", { className: b() }, \"11\");\n    };\n    return App;\n}(React.PureComponent));\nexports[\"default\"] = App;\n\n\n//# sourceURL=webpack:///./App/App.tsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"../node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var bem_cn__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bem-cn */ \"../node_modules/bem-cn/lib/index.js\");\n/* harmony import */ var bem_cn__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bem_cn__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var Lessons_React_10_ErrorBoundary_ErrorBoundary__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! Lessons/React/10.ErrorBoundary/ErrorBoundary */ \"./Lessons/React/10.ErrorBoundary/ErrorBoundary.tsx\");\nvar __extends = (undefined && undefined.__extends) || (function () {\n    var extendStatics = function (d, b) {\n        extendStatics = Object.setPrototypeOf ||\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };\n        return extendStatics(d, b);\n    };\n    return function (d, b) {\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();\n\n\n\nvar Parent = react__WEBPACK_IMPORTED_MODULE_0__[\"lazy\"](function () { return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! Lessons/React/13.Portals/Parent */ \"./Lessons/React/13.Portals/Parent.tsx\")); });\nvar b = Object(bem_cn__WEBPACK_IMPORTED_MODULE_1__[\"block\"])('app');\nvar App = (function (_super) {\n    __extends(App, _super);\n    function App() {\n        return _super !== null && _super.apply(this, arguments) || this;\n    }\n    App.prototype.render = function () {\n        return (react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"div\", { className: b() },\n            react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](Lessons_React_10_ErrorBoundary_ErrorBoundary__WEBPACK_IMPORTED_MODULE_2__[\"default\"], null,\n                react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](react__WEBPACK_IMPORTED_MODULE_0__[\"Suspense\"], { fallback: react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](react__WEBPACK_IMPORTED_MODULE_0__[\"Fragment\"], null, \"\\u0417\\u0430\\u0433\\u0440\\u0443\\u0437\\u043A\\u0430...\") },\n                    react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](Parent, null))),\n            react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"div\", { id: 'popover' })));\n    };\n    return App;\n}(react__WEBPACK_IMPORTED_MODULE_0__[\"PureComponent\"]));\n/* harmony default export */ __webpack_exports__[\"default\"] = (App);\n\n\n//# sourceURL=webpack:///./App/App.tsx?");
 
 /***/ }),
 
-/***/ "./Lessons/React/8.SplittingCode/SplittingCode.tsx":
-/*!*********************************************************!*\
-  !*** ./Lessons/React/8.SplittingCode/SplittingCode.tsx ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./Lessons/React/10.ErrorBoundary/ErrorBoundary.tsx":
+/*!**********************************************************!*\
+  !*** ./Lessons/React/10.ErrorBoundary/ErrorBoundary.tsx ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("\nvar __extends = (this && this.__extends) || (function () {\n    var extendStatics = function (d, b) {\n        extendStatics = Object.setPrototypeOf ||\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };\n        return extendStatics(d, b);\n    };\n    return function (d, b) {\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();\nexports.__esModule = true;\nvar React = __webpack_require__(/*! react */ \"../node_modules/react/index.js\");\nvar bem_cn_1 = __webpack_require__(/*! bem-cn */ \"../node_modules/bem-cn/lib/index.js\");\nvar b = bem_cn_1.block('contact-us');\nvar SplittingCode = (function (_super) {\n    __extends(SplittingCode, _super);\n    function SplittingCode() {\n        return _super !== null && _super.apply(this, arguments) || this;\n    }\n    SplittingCode.prototype.render = function () {\n        return React.createElement(\"div\", { className: b() }, \"\\u042D\\u0442\\u043E\\u0442 \\u043A\\u043E\\u0434 \\u0440\\u0435\\u043D\\u0434\\u0435\\u0440\\u0438\\u0442\\u0441\\u044F \\u0430\\u0441\\u0438\\u043D\\u0445\\u0440\\u043E\\u043D\\u043D\\u043E\");\n    };\n    return SplittingCode;\n}(React.PureComponent));\nexports[\"default\"] = SplittingCode;\n\n\n//# sourceURL=webpack:///./Lessons/React/8.SplittingCode/SplittingCode.tsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"../node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var bem_cn__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bem-cn */ \"../node_modules/bem-cn/lib/index.js\");\n/* harmony import */ var bem_cn__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bem_cn__WEBPACK_IMPORTED_MODULE_1__);\nvar __extends = (undefined && undefined.__extends) || (function () {\n    var extendStatics = function (d, b) {\n        extendStatics = Object.setPrototypeOf ||\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };\n        return extendStatics(d, b);\n    };\n    return function (d, b) {\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();\n\n\nvar b = Object(bem_cn__WEBPACK_IMPORTED_MODULE_1__[\"block\"])('children');\nfunction logErrorToMyService(logError, logErrorInfo) {\n    console.log('logError', logError);\n    console.log('logErrorInfo', logErrorInfo);\n}\nvar ErrorBoundary = (function (_super) {\n    __extends(ErrorBoundary, _super);\n    function ErrorBoundary() {\n        var _this = _super !== null && _super.apply(this, arguments) || this;\n        _this.state = { hasError: false, error: '' };\n        return _this;\n    }\n    ErrorBoundary.getDerivedStateFromError = function (error) {\n        console.log('error', error);\n        return { hasError: true };\n    };\n    ErrorBoundary.prototype.componentDidCatch = function (error, errorInfo) {\n        logErrorToMyService(error, errorInfo);\n    };\n    ErrorBoundary.prototype.render = function () {\n        var hasError = this.state.hasError;\n        if (hasError) {\n            return react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](\"h1\", { className: b() }, \"\\u0411\\u043E\\u043A\\u0441 \\u043F\\u0435\\u0440\\u0435\\u043F\\u043E\\u043B\\u043D\\u0435\\u043D!\");\n        }\n        return this.props.children;\n    };\n    return ErrorBoundary;\n}(react__WEBPACK_IMPORTED_MODULE_0__[\"PureComponent\"]));\n/* harmony default export */ __webpack_exports__[\"default\"] = (ErrorBoundary);\n\n\n//# sourceURL=webpack:///./Lessons/React/10.ErrorBoundary/ErrorBoundary.tsx?");
 
 /***/ }),
 
@@ -257,11 +372,11 @@ eval("\nvar __extends = (this && this.__extends) || (function () {\n    var exte
 /*!***********************!*\
   !*** ./createApp.tsx ***!
   \***********************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("\nexports.__esModule = true;\nvar React = __webpack_require__(/*! react */ \"../node_modules/react/index.js\");\nvar ReactDom = __webpack_require__(/*! react-dom */ \"../node_modules/react-dom/index.js\");\nvar App_1 = __webpack_require__(/*! ./App/App */ \"./App/App.tsx\");\nReactDom.render(React.createElement(App_1[\"default\"], null), document.getElementById('root'));\n\n\n//# sourceURL=webpack:///./createApp.tsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"../node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ \"../node_modules/react-dom/index.js\");\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _App_App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App/App */ \"./App/App.tsx\");\n\n\n\nreact_dom__WEBPACK_IMPORTED_MODULE_1__[\"render\"](react__WEBPACK_IMPORTED_MODULE_0__[\"createElement\"](_App_App__WEBPACK_IMPORTED_MODULE_2__[\"default\"], null), document.getElementById('root'));\n\n\n//# sourceURL=webpack:///./createApp.tsx?");
 
 /***/ })
 
