@@ -10,7 +10,7 @@ class App extends React.PureComponent {
     return (<div className={b()}>
       <ErrorBoundary>
         <React.Suspense fallback={<>Загрузка...</>}>
-          <Parent/>
+          <Parent />
         </React.Suspense>
       </ErrorBoundary>
       <div id={'popover'} />

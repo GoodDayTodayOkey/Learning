@@ -10,15 +10,15 @@ const popover: Element =  ReactDom.render(
   document.getElementById('popover'));
 
 class Modal extends React.PureComponent {
-  private externalWindow = window.open('', '', 'width=600,height=400,left=200,top=200');
+  // private externalWindow = window.open('', '', 'width=600,height=400,left=200,top=200');
 
   public componentDidMount () {
-    this.externalWindow.document.body.appendChild(popover);
+    // this.externalWindow.document.body.appendChild(popover);
   }
 
   public render () {
     const { children } = this.props;
-    return <div className={b()} style={{ height: '100px' }}> {ReactDom.createPortal(
+    return <div className={b()}> {ReactDom.createPortal(
       children,
       popover,
     )}</div>;

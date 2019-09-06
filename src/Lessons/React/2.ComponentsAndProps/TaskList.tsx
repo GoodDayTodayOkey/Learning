@@ -13,7 +13,7 @@ const TaskList = (props: IProps) => {
   return (
     <div className={b()}>
       {tasks.map((task: string, index: number) => <Task task={task} />)}
-    </div>)
-}
+    </div>);
+};
 
 export default TaskList;

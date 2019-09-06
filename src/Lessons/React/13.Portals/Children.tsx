@@ -9,7 +9,7 @@ interface IProps {
 
 class Children extends React.PureComponent<IProps> {
   public render () {
-    const { counter, onClick } = this.props;
+    const { counter } = this.props;
     return (
       <div className={b()}>
          Модальный элемент {counter}
