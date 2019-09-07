@@ -3,6 +3,7 @@ import { block } from 'bem-cn';
 import ErrorBoundary from 'Lessons/React/10.ErrorBoundary/ErrorBoundary';
 const Parent  = React.lazy(() => import('Lessons/React/15.RenderProps/Parent'));
 const Children  = React.lazy(() => import('Lessons/React/15.RenderProps/Children'));
+const ContactUS  = React.lazy(() => import('Lessons/React/16.FinalForm/ContactUs'));
 
 const b = block('app');
 
@@ -15,6 +16,7 @@ class App extends React.PureComponent {
             <Parent
               render={(counter, onClick) => <Children counter={counter} onClick={onClick}/>}
             />
+            <ContactUS />
           </React.Suspense>
         </ErrorBoundary>
         <div id={'popover'} />
