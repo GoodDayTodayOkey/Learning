@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { block } from 'bem-cn';
 import { FieldRenderProps } from 'react-final-form';
-import './TextArea.scss';
 
 const b = block('textArea');
 

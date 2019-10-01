@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { block } from 'bem-cn';
 import { FieldRenderProps } from 'react-final-form';
-import './TextInput.scss';
 
 const b = block('textInput');
 

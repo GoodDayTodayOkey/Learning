@@ -4,7 +4,8 @@ import { block } from 'bem-cn';
 const b = block('parent');
 
 interface IProps {
-  render(counter: number, onClick: () => void): JSX.Element;
+  child(counter: number, onClick: () => void): JSX.Element;
+  mainCounter(): JSX.Element;
 }
 
 interface IState {
@@ -14,12 +15,13 @@ interface IState {
 class Parent extends React.PureComponent<IProps, IState> {
   public state: IState = { counter: 0 };
 
-  public render () {
-    const { render } = this.props;
+  public render() {
+    const { child, mainCounter } = this.props;
     const { counter } = this.state;
     return (
       <>
-        {render(counter, this.onClick)}
+        {child(counter, this.onClick)}
+        {mainCounter()}
       </>
     );
   }
