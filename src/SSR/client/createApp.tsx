@@ -15,7 +15,7 @@ declare global {
 const composeEnhancers = composeWithDevTools({});
 
 const preloadedState = window.__PRELOADED_STATE__;
-
+delete window.__PRELOADED_STATE__;
 const store = createStore(updateStore, preloadedState, composeEnhancers(applyMiddleware()));
 
 ReactDom.hydrate(

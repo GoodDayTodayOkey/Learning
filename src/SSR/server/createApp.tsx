@@ -5,13 +5,25 @@ import * as ReactDomServer from 'react-dom/server';
 import * as cors from 'cors';
 import * as serialize from 'serialize-javascript';
 import * as express from 'express';
+import * as qs from 'qs';
 
 import App from '../../App/App';
 import { updateStore } from '../../Lessons/React/17.SSR/reducers';
+import { number } from 'prop-types';
+interface IServerReduxStore {
+  data: {
+    counter: number;
+    name: string;
+  }
+}
 
-const app = express();
-const handleRender = (req, res) => {
-  const store = createStore(updateStore);
+const asyncGetParams = async (cb: (req, res, asyncApi) => void, req, res, ) => {
+  const asyncApi: IServerReduxStore = await Promise.resolve({ "data": { "counter": 5, "name": "Mike" } });
+  return cb(req, res, asyncApi);
+}
+
+const asyncHandleRender = (req, res, asyncApi) => {
+  const store = createStore(updateStore, asyncApi);
 
   const preloadedState = store.getState();
   const html = ReactDomServer.renderToString(
@@ -23,6 +35,11 @@ const handleRender = (req, res) => {
   res.set('content-type', 'text/html');
   res.send(renderFullPage(html, preloadedState));
   res.end();
+}
+
+const app = express();
+const handleRender = (req, res) => {
+  asyncGetParams(asyncHandleRender, req, res);
 };
 
 const renderFullPage = (html, preloadedState) => {

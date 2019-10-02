@@ -4,10 +4,17 @@
   "description": "StarterKit for your project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-update": "webpack --config client.webpack.config.js",
-    "dev": "webpack-dev-server --open --config client.webpack.config.js",
-    "ssr": "webpack --config client.webpack.config.js -w & ts-node src/SSR/server/createApp.tsx"
+    "dev-update": "better-npm-run dev-update",
+    "dev": "better-npm-run dev",
+    "ssr": "better-npm-run ssr"
+  },
+  "betterScripts": {
+   "dev-update": "webpack --config client.webpack.config.js",
+   "dev": "webpack-dev-server --open --config client.webpack.config.js",
+   "ssr": {
+     "command" :"rimraf dist & webpack --config client.webpack.config.js -w & ts-node src/SSR/server/createApp.tsx",
+     "env" : {"NODE_ENV": "SSR"}
+   }
   },
   "repository": {
     "type": "git",
@@ -40,6 +47,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "bem-cn": "^3.0.1",
+    "better-npm-run": "^0.1.1",
     "core-decorators": "^0.20.0",
     "core-js": "^3.2.1",
     "cors": "^2.8.5",
@@ -60,6 +68,7 @@
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
+    "rimraf": "^3.0.0",
     "sass-loader": "^7.1.0",
     "serialize-javascript": "^2.1.0",
     "style-loader": "^0.23.1",
