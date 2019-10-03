@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { block } from 'bem-cn';
 
-const b = block('meeting-jsx');
+const b = block('name');
 
 interface IProps {
   name: string;

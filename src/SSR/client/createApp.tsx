@@ -7,7 +7,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { updateStore } from '../../Lessons/React/17.SSR/reducers';
 import { IReduxStore } from 'Lessons/React/17.SSR/types';
-
+import { BrowserRouter } from "react-router-dom";
 declare global {
   interface Window { __PRELOADED_STATE__: IReduxStore; }
 }
@@ -19,7 +19,9 @@ delete window.__PRELOADED_STATE__;
 const store = createStore(updateStore, preloadedState, composeEnhancers(applyMiddleware()));
 
 ReactDom.hydrate(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter>,
   document.getElementById('root'));

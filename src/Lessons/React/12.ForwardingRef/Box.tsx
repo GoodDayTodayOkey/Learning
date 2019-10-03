@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { block } from 'bem-cn';
-import HOC from 'Lessons/React/12.ForwardingRef/HOC';
-import Robots from 'Lessons/React/12.ForwardingRef/Robots';
-import { BOX_SQUARE } from 'Lessons/React/12.ForwardingRef/constants';
+import HOC from './HOC';
+import Robots from './Robots';
+import { BOX_SQUARE } from './constants';
 
 const b = block('box');
 const RobotsFabric = HOC(Robots);
@@ -20,11 +20,11 @@ class Box extends React.PureComponent<{}, IState> {
 
   private robotsRef: React.RefObject<React.Component & A> = React.createRef();
 
-  public componentDidMount () {
+  public componentDidMount() {
     this.robotsRef.current.childrenMethod();
   }
 
-  public render () {
+  public render() {
     const { square } = this.state;
     return (
       <div className={b()}>

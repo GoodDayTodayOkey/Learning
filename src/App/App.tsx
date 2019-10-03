@@ -7,7 +7,7 @@ import Parent from '../Lessons/React/15.RenderProps/Parent';
 import Children from '../Lessons/React/15.RenderProps/Children';
 import MainChildren from '../Lessons/React/17.SSR/MainChildren/MainChildren';
 import ContactUs from '../Lessons/React/16.FinalForm/ContactUs';
-import Name from '../Lessons/React/17.SSR/Name/Name';
+import HomePage from '../Lessons/React/17.SSR/HomePage/HomePage';
 import { IReduxStore } from '../Lessons/React/17.SSR/types';
 import { changeName, incrementCounter } from '../Lessons/React/17.SSR/actions';
 import * as selectors from '../Lessons/React/17.SSR/selectors';
@@ -26,14 +26,21 @@ class App extends React.PureComponent<Props> {
       <div className={b()}>
         <React.StrictMode>
           <ErrorBoundary>
-            <div id={'menu'} >
-              <Parent
+            <HomePage
+              name={name}
+              mainCounter={mainCounter}
+              onIncrementCounter={onIncrementCounter}
+              onChangeName={onChangeName}
+            />
+            {/* <div id={'menu'} > */}
+
+            {/* <Parent
                 child={(counter, onClick) => <Children counter={counter} onClick={onClick} />}
                 mainCounter={() => <MainChildren counter={mainCounter} onClick={onIncrementCounter} />}
               />
               <ContactUs />
-              <Name name={name} onChangeName={onChangeName} />
-            </div>
+              <Name name={name} onChangeName={onChangeName} /> */}
+            {/* </div> */}
           </ErrorBoundary>
         </React.StrictMode>
       </div>

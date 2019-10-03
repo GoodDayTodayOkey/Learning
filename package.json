@@ -9,12 +9,14 @@
     "ssr": "better-npm-run ssr"
   },
   "betterScripts": {
-   "dev-update": "webpack --config client.webpack.config.js",
-   "dev": "webpack-dev-server --open --config client.webpack.config.js",
-   "ssr": {
-     "command" :"rimraf dist & webpack --config client.webpack.config.js -w & ts-node src/SSR/server/createApp.tsx",
-     "env" : {"NODE_ENV": "SSR"}
-   }
+    "dev-update": "webpack --config client.webpack.config.js",
+    "dev": "webpack-dev-server --open --config client.webpack.config.js",
+    "ssr": {
+      "command": "rimraf dist & webpack --config client.webpack.config.js -w & ts-node src/SSR/server/createApp.tsx",
+      "env": {
+        "NODE_ENV": "SSR"
+      }
+    }
   },
   "repository": {
     "type": "git",
@@ -65,7 +67,7 @@
     "react-final-form": "^6.3.0",
     "react-imported-component": "^6.0.5",
     "react-redux": "^7.1.1",
-    "react-router-dom": "^5.0.1",
+    "react-router-dom": "^5.1.2",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
     "rimraf": "^3.0.0",

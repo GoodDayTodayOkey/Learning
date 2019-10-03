@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { block } from 'bem-cn';
 
-import { IRobotSize, IBoxSize } from 'Lessons/React/11.HOC/Children';
-import { MAX_QUANTITY_ROBOT_IN_BOX } from 'Lessons/React/11.HOC/constants';
+import { IRobotSize, IBoxSize } from './Box';
+import { MAX_QUANTITY_ROBOT_IN_BOX } from './constants';
 
 interface IWrapperComponentProps {
   robotSize: IRobotSize;
@@ -14,7 +13,7 @@ interface IState {
 }
 
 const HOC = <T extends IWrapperComponentProps>(WrapperComponent: React.ComponentType<T>) => {
-  return class AddCounter extends React.PureComponent<T, IState > {
+  return class AddCounter extends React.PureComponent<T, IState> {
     public state: IState = { counterRobots: 0 };
 
     public componentDidUpdate() {
