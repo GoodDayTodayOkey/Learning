@@ -1,0 +1,50 @@
+{
+  "errors": [],
+  "warnings": [],
+  "version": "4.36.1",
+  "hash": "e5ee3d5aaebbd01e6860",
+  "publicPath": "",
+  "outputPath": "/home/main/Work/Learning/dist",
+  "assetsByChunkName": {
+    "main": "main.bundle.js"
+  },
+  "assets": [
+    {
+      "name": "main.bundle.js",
+      "size": 1355359,
+      "chunks": [
+        "main"
+      ],
+      "chunkNames": [
+        "main"
+      ],
+      "emitted": false
+    }
+  ],
+  "filteredAssets": 0,
+  "entrypoints": {
+    "main": {
+      "chunks": [
+        "main"
+      ],
+      "assets": [
+        "main.bundle.js"
+      ],
+      "children": {},
+      "childAssets": {}
+    }
+  },
+  "namedChunkGroups": {
+    "main": {
+      "chunks": [
+        "main"
+      ],
+      "assets": [
+        "main.bundle.js"
+      ],
+      "children": {},
+      "childAssets": {}
+    }
+  },
+  "children": []
+}
