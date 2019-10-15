@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { block } from 'bem-cn';
 import { Switch, Route, Link } from "react-router-dom";
-import Parent from '../../15.RenderProps/Parent';
-import ContactUs from '../../16.FinalForm/ContactUs';
-import Children from '../../15.RenderProps/Children';
-import MainChildren from '../../17.SSR/MainChildren/MainChildren';
-import Name from '../../17.SSR/Name/Name';
-import Box from '../../12.ForwardingRef/Box';
+import loadable from '@loadable/component'
+const Name = loadable(() => import('Lessons/React/17.SSR/Name/Name'));
+const Box = loadable(() => import('Lessons/React/12.ForwardingRef/Box'));
+const MainChildren = loadable(() => import('Lessons/React/17.SSR/MainChildren/MainChildren'));
+const Children = loadable(() => import('Lessons/React/15.RenderProps/Children'));
+const ContactUs = loadable(() => import('Lessons/React/16.FinalForm/ContactUs'));
+const Parent = loadable(() => import('Lessons/React/15.RenderProps/Parent'));
+const NestedRouting = loadable(() => import('Lessons/React/17.SSR/NestedRouting/NestedRouting'));
 
 interface IProps {
   name: string;
@@ -32,6 +34,9 @@ const HomePage: React.FC<IProps> = (props) => {
             <Link className={b('link')} to="/contact-us">Contact Us</Link>
           </li>
           <li className={b('menu-item')}>
+            <Link className={b('link')} to="/matching">Matching</Link>
+          </li>
+          <li className={b('menu-item')}>
             <Link className={b('link')} to="/robots">Robots</Link>
           </li>
           <li className={b('menu-item')}>
@@ -40,14 +45,12 @@ const HomePage: React.FC<IProps> = (props) => {
         </ul>
       </div>
       <Switch>
-        <Route path="/greeting">
+        <Route path="/greeting" >
           <Name name={name} onChangeName={onChangeName} />
         </Route>
-        <Route path="/robots">
-          <Box />
-        </Route>
-        <Route path="/contact-us">
-          <ContactUs />
+        <Route path="/robots" component={Box} />
+        <Route path="/matching" component={NestedRouting} />
+        <Route path="/contact-us" component={ContactUs}>
         </Route>
         <Route path="/counters">
           <Parent

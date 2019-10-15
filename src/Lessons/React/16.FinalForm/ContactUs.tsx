@@ -64,9 +64,6 @@ class ContactUs extends React.PureComponent {
                 </Field>
                 <FormSpy
                   subscription={{ values: true }}
-                // onChange={(props) => {
-                //   console.log('Form validity changed to', props.values);
-                // }}
                 >
                   {({ values }) => {
                     return (

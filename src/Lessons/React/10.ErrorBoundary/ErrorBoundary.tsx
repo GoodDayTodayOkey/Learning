@@ -25,10 +25,10 @@ class ErrorBoundary extends React.PureComponent<{}, IState> {
     logErrorToMyService(error, errorInfo);
   }
 
-  public render () {
+  public render() {
     const { hasError } = this.state;
     if (hasError) {
-      return <h1 className={b()}>Бокс переполнен!</h1>;
+      return <h1 className={b()}>Произошла ошибка!</h1>;
     }
     return this.props.children;
   }

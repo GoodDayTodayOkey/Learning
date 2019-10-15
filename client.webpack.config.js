@@ -1,3 +1,4 @@
+const LoadablePlugin = require('@loadable/webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
@@ -10,7 +11,7 @@ const plugins = [
     template: './assets/index.html'
   })
 ];
-const webpackPlugins = process.env.NODE_ENV === 'SSR' ?  plugins.slice(0,0) : plugins;
+// const webpackPlugins = process.env.NODE_ENV === 'SSR' ?  plugins.slice(0,0) : plugins;
 
 module.exports = {
   mode: 'development',
@@ -42,5 +43,5 @@ module.exports = {
       { test: /\.(png|svg|jpg|gif|ico)$/, use: 'file-loader'},
     ]
   },
-  plugins: webpackPlugins,
+  plugins:[new LoadablePlugin()],
 };

@@ -6,6 +6,7 @@ import * as cors from 'cors';
 import * as serialize from 'serialize-javascript';
 import * as express from 'express';
 import * as qs from 'qs';
+import { StaticRouter } from "react-router-dom";
 
 import App from '../../App/App';
 import { updateStore } from '../../Lessons/React/17.SSR/reducers';
@@ -24,12 +25,15 @@ const asyncGetParams = async (cb: (req, res, asyncApi) => void, req, res, ) => {
 
 const asyncHandleRender = (req, res, asyncApi) => {
   const store = createStore(updateStore, asyncApi);
-
+  const context = {};
+  const params = qs.parse(req.query);
   const preloadedState = store.getState();
   const html = ReactDomServer.renderToString(
-    <Provider store={store}>
-      <App />
-    </Provider>,
+    <StaticRouter location={req.url} context={context}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </StaticRouter>
   );
 
   res.set('content-type', 'text/html');

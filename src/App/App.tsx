@@ -32,15 +32,6 @@ class App extends React.PureComponent<Props> {
               onIncrementCounter={onIncrementCounter}
               onChangeName={onChangeName}
             />
-            {/* <div id={'menu'} > */}
-
-            {/* <Parent
-                child={(counter, onClick) => <Children counter={counter} onClick={onClick} />}
-                mainCounter={() => <MainChildren counter={mainCounter} onClick={onIncrementCounter} />}
-              />
-              <ContactUs />
-              <Name name={name} onChangeName={onChangeName} /> */}
-            {/* </div> */}
           </ErrorBoundary>
         </React.StrictMode>
       </div>
